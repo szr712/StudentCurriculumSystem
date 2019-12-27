@@ -38,8 +38,6 @@ public class TeaIn extends HttpServlet {
 		String counum = (String) request.getParameter("num");
 		
 		String year = (String) request.getParameter("year");
-		request.setAttribute("year", year);
-		request.setAttribute("num", counum);
 		String num1 = counum;
 
 		Cookie cookie = null;
@@ -65,20 +63,25 @@ public class TeaIn extends HttpServlet {
 
 			}
 		} else {
-			float grade = Float.parseFloat(request.getParameter("grade"));
-			String stunum = request.getParameter("stunum");
-			boolean flag = teaDao.changeGrade(grade, coursenum, stunum);
-			if (flag) {
-				sList = new ArrayList<>();
-				coursenum = coursenum.substring(0, 5);
-				
-				sList = teaDao.getSingle(num, coursenum, year, 1);
-			} else {
-				request.setAttribute("flag", "录入出现错误！");
+			counum = coursenum.substring(0, 5);
+			year=coursenum.substring(10,14);
+			//System.out.println(counum);
+			sList = new ArrayList<>();
+			sList = teaDao.getSingle(num, counum, year, 1);
+			for(int i=0;i<sList.size();i++) {
+				float grade = Float.parseFloat(request.getParameter(Integer.toString(i)));
+				//System.out.println(grade);
+				String stunum = sList.get(i).getNum();
+				//System.out.println(stunum);
+				boolean flag = teaDao.changeGrade(grade, coursenum, stunum);
 			}
+			sList = new ArrayList<>();
+			coursenum = coursenum.substring(0, 5);
+			sList = teaDao.getSingle(num, coursenum, year, 1);
 
 		}
-
+		request.setAttribute("year", year);
+		request.setAttribute("num", counum);
 		ArrayList<String> aList = teaDao.getACourse(num);
 		request.setAttribute("alist", aList);
 		request.setAttribute("slist", sList);

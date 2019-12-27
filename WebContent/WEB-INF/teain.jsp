@@ -313,7 +313,7 @@
 													ArrayList<String> aList = (ArrayList<String>) request.getAttribute("alist");
 													String num=(String)request.getAttribute("num");											
 													for (int i = 0; i < aList.size(); i++) {
-														if(aList.get(i).equals(num)){															
+														if(aList.get(i).substring(aList.get(i).indexOf("（") + 1, aList.get(i).length() - 1).equals(num)){															
 												%>
 												<option value="<%=aList.get(i)%>" selected = "selected"><%=aList.get(i)%></option>
 
@@ -378,17 +378,16 @@
 
 
 							<div>
+							<form class="form-horizontal" role="form" action="TeaIn"
+												method="POST" accept-charset="UTF-8">
 								<table id="dynamic-table"
 									class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th class="center">学号</th>
 											<th class="center">姓名</th>
-											<th class="center">已修学分总数</th>
-											<th class="center">课程名称</th>
-											<th class="center">学年</th>
 											<th class="center">成绩</th>
-											<th class="center detail-col"></th>
+								
 
 										</tr>
 									</thead>
@@ -402,26 +401,36 @@
 
 											<td class="center"><%=slist.get(i).getNum()%></td>
 											<td class="center"><%=slist.get(i).getName()%></td>
-											<td class="center"><%=slist.get(i).getCredit()%></td>
-											<td class="center"><%=slist.get(i).getCoursename()%></td>
-											<td class="center"><%=slist.get(i).getYear()%></td>
+											
 											<%
 												if (slist.get(i).getGpa() == 0) {
 											%>
-											<td class="center">待录入</td>
+											<td class="center no-padding col-xs-2"><input type="text" placeholder="请输入0~100之间的小数！"
+															class="center" required="required" name="grade" style="width: 100%; height: 100%" 
+															value="待录入"
+															pattern="^(\d{1,2}(\.\d{1,3})?|100)$"></td>
 											<%
 												} else {
 											%>
-											<td class="center"><%=slist.get(i).getGpa()%></td>
+											<td class="center no-padding col-xs-2"><input type="text" placeholder="请输入0~100之间的小数！"
+															class="center" required="required" name="<%=i%>" style="width: 100%; height: 100%" 
+															value="<%=slist.get(i).getGpa()%>"
+															pattern="^(\d{1,2}(\.\d{1,3})?|100)$"></td>
 											<%
 												}
 											%>
 
-											<td class="center"><button class="btn btn-xs btn-info"
-													href="#row<%=i%>" role="button" data-toggle="modal"
-													value="<%=i%>">
-													<i class="ace-icon fa fa-pencil bigger-120"></i>
-												</button></td>
+											<div class="form-group" style="display: none;">
+													<label class="col-sm-3 control-label no-padding-right">
+														开课编号： </label>
+
+													<div class="col-sm-9">
+														<input type="text" placeholder="开课编号" class="col-xs-8"
+															required="required" name="coursenum"
+															value="<%=slist.get(i).getTmpnum()%>"
+															readonly="readonly" />
+													</div>
+												</div>
 											<%
 												}
 											%>
@@ -431,8 +440,23 @@
 
 
 								</table>
+								
+								<div class="clearfix form-actions">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn btn-info" type="submit">
+												<i class="ace-icon fa fa-check bigger-110"></i>
+												完成
+											</button>
+	
+											&nbsp; &nbsp; &nbsp;
+											<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>
+												重置
+											</button>
+										</div>
+									</div>
 								<h2>${flag }</h2>
-
+								</form>
 							</div>
 							<!-- PAGE CONTENT ENDS -->
 						</div>
@@ -489,17 +513,7 @@
 															readonly="readonly" />
 													</div>
 												</div>
-												<div class="form-group" style="display: none;">
-													<label class="col-sm-3 control-label no-padding-right">
-														开课编号： </label>
-
-													<div class="col-sm-9">
-														<input type="text" placeholder="开课编号" class="col-xs-8"
-															required="required" name="coursenum"
-															value="<%=slist.get(i).getTmpnum()%>"
-															readonly="readonly" />
-													</div>
-												</div>
+												
 												<div class="form-group" style="display: none;">
 													<label class="col-sm-3 control-label no-padding-right">
 														年： </label>
