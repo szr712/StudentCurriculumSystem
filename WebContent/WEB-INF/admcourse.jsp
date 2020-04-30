@@ -258,7 +258,7 @@
 					<!-- /.ace-settings-container -->
 
 					<div class="page-header">
-						<h1>维护学生信息<small>${flag }</small></h1>
+						<h1>维护课程<small>${flag }</small></h1>
 					</div>
 					<!-- /.page-header -->
 

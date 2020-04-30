@@ -183,8 +183,6 @@ public class AdmDao extends BaseDao {
 			preparedStatement.setString(5, studentBean.getPlace());
 			preparedStatement.setFloat(6, studentBean.getCredit());
 			preparedStatement.setString(7, studentBean.getClassnum());
-			preparedStatement.setString(8, studentBean.getNum());
-			preparedStatement.setString(9, studentBean.getClassnum());
 			preparedStatement.executeUpdate();
 			connection.close();
 			return true;	
